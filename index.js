@@ -7,7 +7,6 @@ import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import publishersRouter from "./routes/publishers.js";
-import usersRouter from "./routes/users.js";
 const { MONGO_URI } = process.env;
 const PORT = process.env.PORT || 3000;
 
@@ -25,7 +24,6 @@ app.use('/auth', authRouter);
 app.use('/games', gamesRouter);
 app.use('/genres', genresRouter);
 app.use('/publishers', publishersRouter);
-app.use('/users', usersRouter);
 
 
 // DATABASE AND SERVER RUN
