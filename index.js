@@ -11,11 +11,13 @@ import usersRouter from "./routes/users.js";
 const { MONGO_URI } = process.env;
 const PORT = process.env.PORT || 3000;
 
+
 // SERVER SETUP
 const app = express();
 app.use(cors({origin:"*"}));
 app.use(express.json());
 app.use(morgan("dev"));
+
 
 // ROUTES
 app.use('/auth', authRouter);
@@ -34,3 +36,6 @@ mongoose.connect(MONGO_URI)
             console.log(`Server is listening on port ${PORT}.`);
         });
     }).catch(e => console.error(e));
+
+
+export default app
