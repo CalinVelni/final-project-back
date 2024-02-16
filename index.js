@@ -1,4 +1,4 @@
-import { authMidleware } from "./library/authFunctions.js"
+import { authMiddleware } from "./library/authFunctions.js"
 import authRouter from "./routes/auth.js";
 import cors from "cors";
 import dotenv from "dotenv"; dotenv.config();
@@ -21,7 +21,7 @@ app.use(morgan("dev"));
 
 // ROUTES
 app.use('/auth', authRouter);
-app.use(authMidleware());
+app.use(authMiddleware());
 app.use('/games', gamesRouter);
 app.use('/genres', genresRouter);
 app.use('/publishers', publishersRouter);
