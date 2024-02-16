@@ -13,7 +13,8 @@ router.post('/signup', async (req, res) => {
     }
     try {
         const user = await User.signUp(email, password);
-        const token = genToken(user._id);
+        const { _id, type } = user;
+        const token = genToken({ _id, type });
         return res.status(201).send({
             user,
             token

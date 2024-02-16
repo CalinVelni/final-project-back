@@ -16,9 +16,9 @@ export const comparePsw = async (psw, hashedPsw) => {
     return match
 };
 
-export const genToken = (_id) => {
+export const genToken = ({_id, type}) => {
     const token = jwt.sign(
-        { _id },
+        { _id, type },
         SECRET_KEY,
         { expiresIn: '1d' }
     );

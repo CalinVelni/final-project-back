@@ -26,6 +26,11 @@ const userSchema = new Schema({
         },
         required: true,
     },
+    type: {
+        type: String,
+        enum: ['tester', 'developer'],
+        default: 'tester'
+    },
 }, {timestamps: true});
 
 // AUTHENTICATION FUNCTIONS
