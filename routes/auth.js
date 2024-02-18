@@ -32,8 +32,9 @@ router.post('/login', async (req, res) => {
         return res.status(400).send('email and password required.')
     }
     try {
-        const user = await User.logIn(email, password);
-        const token = genToken(user._id);
+        const user = await User.signUp(email, password);
+        const { _id, type } = user;
+        const token = genToken({ _id, type });
         return res.status(201).send({
             user,
             token

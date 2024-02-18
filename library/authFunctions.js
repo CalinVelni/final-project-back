@@ -25,7 +25,7 @@ export const genToken = ({_id, type}) => {
     return token
 };
 
-export const authMidleware = () => {
+export const requireAuth = () => {
     return async (req, res, next) => {
         try {
             const { authorization } = req.headers;
@@ -34,6 +34,27 @@ export const authMidleware = () => {
                 throw new Error('Token required.')
             }
             jwt.verify(token, SECRET_KEY)
+        } catch(err) {
+            console.error(err);
+            return res.status(401).send(`Request is not authorized: ${err.message}`)
+        }
+        next()
+    }
+};
+
+export const requireDev = () => {
+    return async (req, res, next) => {
+        try {
+            const { authorization } = req.headers;
+            const token = authorization?.split(' ')[1];
+            if(!token) {
+                throw new Error('Token required.')
+            }
+            jwt.verify(token, SECRET_KEY);
+            const { type } = jwt.decode(token); // Getting the user type from payload decoding the token
+            if (type !== 'developer') {
+                throw new Error('You must be a developer.') 
+            }
         } catch(err) {
             console.error(err);
             return res.status(401).send(`Request is not authorized: ${err.message}`)

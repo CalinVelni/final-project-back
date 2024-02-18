@@ -13,10 +13,6 @@ const publisherSchema = new Schema({
         type: Array,
         default: []
     },
-    founded_by: {
-        type: SchemaTypes.ObjectId,
-        ref: "User"
-    },
     slug: {
         type: String,
         unique: true,
@@ -24,6 +20,23 @@ const publisherSchema = new Schema({
     }
 
 }, { timestamps: true });
+
+// SLUG GENERATOR METHOD
+publisherSchema.methods.slugGen = async function () {
+    const Publisher = this.constructor;
+    const basicSlug = this.name.replaceAll(' ', '-').toLowerCase();
+    let slugAlreadyUsed = true;
+    let slug = basicSlug;
+    let i = 1;
+    while(slugAlreadyUsed) {
+        slugAlreadyUsed = await Publisher.exists({slug});
+        if(slugAlreadyUsed) {
+            slug = basicSlug + '-' + i;
+            i ++
+        }
+    }
+    this.slug = slug
+};
 
 const Publisher = model("Publisher", publisherSchema);
 

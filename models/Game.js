@@ -18,8 +18,10 @@ const gameSchema = new Schema({
         minLength: 1,
         maxLength: 99999,
     },
-    images: {
-        type: Array,
+    cover: {
+        type: String,
+        minLength: 1,
+        maxLength: 9999,
     },
     slug: {
         type: String,
