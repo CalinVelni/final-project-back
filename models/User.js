@@ -34,7 +34,7 @@ const userSchema = new Schema({
 }, {timestamps: true});
 
 // AUTHENTICATION FUNCTIONS
-userSchema.statics.signUp = async function (email, password) {
+userSchema.statics.signUp = async function (email, password, type) {
     if (!isEmail(email)){
         throw new Error(`${email} is not a valid email.`) 
     }
@@ -48,7 +48,7 @@ userSchema.statics.signUp = async function (email, password) {
         throw err
     }
     const hashedPsw = await hashPsw(password);
-    const user = await this.create({ email, password: hashedPsw });
+    const user = await this.create({ email, password: hashedPsw, type });
     return user
 };
 
