@@ -13,7 +13,7 @@ const genreSchema = new Schema({
         type: Array,
         default: []
     }
-});
+}, {timestamps: true});
 
 const Genre = model("Genre", genreSchema);
 

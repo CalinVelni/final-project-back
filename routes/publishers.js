@@ -20,7 +20,7 @@ router.get('/:slug', async (req, res) => {
     try {
         const publisher = await Publisher.findOne({ slug: req.params.slug }).populate('games', 'title cover slug');
         if (publisher === null) {
-            throw new Error('Not found')
+            throw new Error('Not found.')
         }
         publisher.games = await Game.find({ publisher: publisher._id });
         res.send(publisher);
@@ -71,7 +71,6 @@ router.patch('/:slug', async ( req, res) => {
         pubUpdated.games = await Game.find({publisher: pubUpdated._id});
         res.send(pubUpdated) 
     } catch(e) {
-        console.log(e);
         res.status(400).send(e.message)
     }
 });
