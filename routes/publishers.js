@@ -56,6 +56,9 @@ router.patch('/:slug', async ( req, res) => {
             throw new Error('You must send a body with at least one property.');
         }
         const publisher = await Publisher.findOne({slug: req.params.slug});
+        if (publisher === null) {
+            throw new Error('Not found.')
+        }
         const isNameUpdated = req.body.name && publisher.name !== req.body.name;
         Object.entries(req.body).forEach(([key, value]) => {
             if(key !== 'slug' && key !== 'games') {
