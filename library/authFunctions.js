@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import dotenv from "dotenv"; dotenv.config();
 import jwt from "jsonwebtoken";
-const { PEPPER_KEY, SECRET_KEY } = process.env;
+const { PEPPER_KEY, SECRET_KEY, ADMIN_KEY } = process.env;
 
 export const hashPsw = async (psw) => {
     const salt = await bcrypt.genSalt(12);
@@ -56,8 +56,22 @@ export const requireDev = () => {
                 throw new Error('You must be a developer.') 
             }
         } catch(err) {
-            console.error(err);
             return res.status(401).send(`Request is not authorized: ${err.message}`)
+        }
+        next()
+    }
+};
+
+export const requireAdminKey = () => {
+    return async (req, res, next) => {
+        try {
+            const { admin } = req.headers;
+            const key = admin?.split(' ')[1];
+            if( !key || key !== ADMIN_KEY ) {
+                throw new Error(`Request is not authorized.`)
+            }
+        } catch(err) {
+            return res.status(401).send(`Request is not authorized.`)
         }
         next()
     }
