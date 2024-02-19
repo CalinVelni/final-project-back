@@ -9,6 +9,12 @@ const publisherSchema = new Schema({
         required: true,
         unique: true
     },
+    country: {
+        type: String,
+        trim: true,
+        minLength: 1,
+        maxLength: 99,
+    },
     games: {
         type: Array,
         default: []

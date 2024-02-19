@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
         const publishersList = await Publisher.find();
         res.send(publishersList);
     } catch(e) {
-        res.status(500).send(e)
+        res.status(500).send(e.message)
     }
 });
 
@@ -19,14 +19,13 @@ router.get('/', async (req, res) => {
 router.get('/:slug', async (req, res) => {
     try {
         const publisher = await Publisher.findOne({ slug: req.params.slug }).populate('games', 'title cover slug');
-        res.send(publisher);
         if (publisher === null) {
             throw new Error('Not found')
         }
         publisher.games = await Game.find({ publisher: publisher._id });
         res.send(publisher);
     } catch(e) {
-        res.status(404).send(e)
+        res.status(404).send(e.message)
     }
 });
 
@@ -46,7 +45,7 @@ router.post('/', async ( req, res) => {
         const publishersList = await Publisher.find();
         res.send(publishersList)
     } catch(e) {
-        res.status(400).send(e)
+        res.status(400).send(e.message)
     }
 });
 
@@ -56,8 +55,8 @@ router.patch('/:slug', async ( req, res) => {
         if(!req.body || !Object.keys(req.body).length) {
             throw new Error('You must send a body with at least one property.');
         }
-        const publisher = await findOne({slug: req.params.slug});
-        const isNameUpdated = publisher.name !== req.body.name;
+        const publisher = await Publisher.findOne({slug: req.params.slug});
+        const isNameUpdated = req.body.name && publisher.name !== req.body.name;
         Object.entries(req.body).forEach(([key, value]) => {
             if(key !== 'slug' && key !== 'games') {
                 publisher[key] = value
@@ -67,23 +66,28 @@ router.patch('/:slug', async ( req, res) => {
             await publisher.slugGen();
         }
         publisher.games = [];
-        await publisher.ave();
+        await publisher.save();
         const pubUpdated = await Publisher.findOne({slug: publisher.slug}).populate('games', 'title cover slug');
         pubUpdated.games = await Game.find({publisher: pubUpdated._id});
         res.send(pubUpdated) 
     } catch(e) {
-        res.status(400).send(e)
+        console.log(e);
+        res.status(400).send(e.message)
     }
 });
 
 // DELETE A PUBLISHER
 router.delete('/:slug', async (req, res) => {
     try {
-        await Publisher.findOneAndDelete({slug: req.params.slug});
+        const { slug } = req.params;
+        const confirm = await Publisher.findOneAndDelete({ slug });
+        if(!confirm) {
+            throw new Error(`Cannot delete: publisher with slug ${slug} not found.`)
+        }
         const publishersList = await Publisher.find();
         res.send(publishersList);
     } catch(e) {
-        res.status(404).send(e)
+        res.status(404).send(e.message)
     }
 });
 
