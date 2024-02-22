@@ -27,7 +27,7 @@ const gameSchema = new Schema({
         type: String,
         minLength: 1,
         maxLength: 9999,
-        default: 'https://www.wallpapertip.com/wmimgs/49-490546_retro-video-game-background.png'
+        default: 'https://source.unsplash.com/random/900x900/?videogame'
     },
     slug: {
         type: String,
