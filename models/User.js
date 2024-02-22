@@ -54,6 +54,11 @@ userSchema.statics.signUp = async function (email, password, type) {
 
 userSchema.statics.logIn = async function (email, password) {
     const user = await this.findOne({email});
+    if (!user) {
+        const err = new Error('Incorrect email or password.');
+        err.statusCode = 401;
+        throw err
+    }
     const pswMatch = await comparePsw(password, user.password);
     if (!user || !pswMatch) {
         const err = new Error('Incorrect email or password.');
