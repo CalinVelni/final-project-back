@@ -20,7 +20,7 @@ export const genToken = ({_id, type}) => {
     const token = jwt.sign(
         { _id, type },
         SECRET_KEY,
-        { expiresIn: '7d' }
+        { expiresIn: '3d' }
     );
     return token
 };
