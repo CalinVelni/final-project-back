@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 // READ SINGLE GAME
 router.get('/:slug', async (req, res) => {
     try {
-        const game = await Game.findOne({ slug: req.params.slug }).populate('publisher', 'name country').populate('genre', 'name');
+        const game = await Game.findOne({ slug: req.params.slug }).populate('publisher', 'name country slug').populate('genre', 'name');
         if (game === null) {
             throw new Error('Not found.')
         }
