@@ -14,6 +14,7 @@ const publisherSchema = new Schema({
         trim: true,
         minLength: 1,
         maxLength: 99,
+        default: 'Unknown'
     },
     games: {
         type: Array,

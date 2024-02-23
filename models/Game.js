@@ -15,19 +15,20 @@ const gameSchema = new Schema({
     },
     genre: {
         type: SchemaTypes.ObjectId,
-        ref: "Genre"
+        ref: "Genre",
+        required: true
     },
     description: {
         type: String,
         trim: true,
-        minLength: 1,
-        maxLength: 99999,
+        maxLength: 9999,
+        default: 'Not Available'
     },
     cover: {
         type: String,
-        minLength: 1,
-        maxLength: 9999,
-        default: 'https://source.unsplash.com/random/900x900/?videogame'
+        trim: true,
+        maxLength: 999,
+        default: 'https://source.unsplash.com/random/500x500/?videogame'
     },
     slug: {
         type: String,
